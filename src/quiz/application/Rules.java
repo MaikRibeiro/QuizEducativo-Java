@@ -18,7 +18,6 @@ public class Rules extends JFrame implements ActionListener {
 	
 	public Rules(String nameUser) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
 		getContentPane().setBackground(Color.BLACK);
 		setLayout(null);
@@ -72,6 +71,7 @@ public class Rules extends JFrame implements ActionListener {
 		jbStart.setForeground(Color.WHITE);
 		jbStart.addActionListener(this);
 		add(jbStart);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setVisible(true);
 	}
 
