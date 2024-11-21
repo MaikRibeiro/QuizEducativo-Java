@@ -33,19 +33,18 @@ public class Rules extends JFrame implements ActionListener {
 		add(jlHeading);
 
 		JLabel jlRules = new JLabel();
-		jlRules.setBounds(930, 150, 330, 350);
+		jlRules.setBounds(930, 150, 400, 350);
 		jlRules.setFont(new Font("Times New Roman", NORMAL, 16));
 		jlRules.setForeground(Color.WHITE);
 		jlRules.setText( "<html>" +
-												"1.  <br><br>" +
-												"2.  <br><br>" +
-												"3.  <br><br>" +
-												"4.  <br><br>" +
-												"5.  <br><br>" +
-												"5.  <br><br>" +
-												"6.  <br><br>" +
-										"<html>"
-										);
+								"1. São 20 questões, sendo as 10 primeiras de Matemática e as seguintes de Português<br><br>" +
+								"2. Nivel de complexidade das questões é até Ensino Médio<br><br>" +
+								"3. Cada questão é cronometrada <br><br>" +
+								"4. Para cada questão, apenas uma é a correta<br><br>" +
+								"5. Responda todas as questões para finalizar o Quiz <br><br>" +
+								"5. Se divirta! <br><br>" +
+						"<html>"
+						);
 
 		add(jlRules);
 		
