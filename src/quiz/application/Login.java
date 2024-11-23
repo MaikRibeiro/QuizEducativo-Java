@@ -16,7 +16,7 @@ public class Login extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 5598741349090497172L;
 	
-	private JButton jbBack, jbRules;
+	private JButton jbClose, jbRules;
 	private JTextField jtfNameInput;
 	
 	public Login() {
@@ -45,12 +45,12 @@ public class Login extends JFrame implements ActionListener {
 		jtfNameInput.setFont(new Font("Times New Roman", NORMAL, 20));
 		add(jtfNameInput);
 
-		jbBack = new JButton("Voltar");
-		jbBack.setBounds(930, 390, 100, 30);
-		jbBack.setBackground(new Color(50, 150, 118));
-		jbBack.setForeground(Color.WHITE);
-		jbBack.addActionListener(this);
-		add(jbBack);
+		jbClose = new JButton("Fechar");
+		jbClose.setBounds(930, 390, 100, 30);
+		jbClose.setBackground(new Color(50, 150, 118));
+		jbClose.setForeground(Color.WHITE);
+		jbClose.addActionListener(this);
+		add(jbClose);
 
 		jbRules = new JButton("Regras");
 		jbRules.setBounds(1120, 390, 100, 30);
@@ -78,7 +78,7 @@ public class Login extends JFrame implements ActionListener {
 		if (e.getSource() == jbRules) {
 			setVisible(false);
 			new Rules(jtfNameInput.getText());
-		} else if (e.getSource() == jbBack) {
+		} else if (e.getSource() == jbClose) {
 			setVisible(false);
 		}
 	}
