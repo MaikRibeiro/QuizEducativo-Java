@@ -18,20 +18,23 @@ public class QuizApp extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 6574515577473204562L;
 
 	private String[][] questions = new String[20][5];
-	private String[][] answers = new String[20][5];
-	private String[][] userAnswers = new String[19][1];   
+	private String[][] answers = new String[20][2];
+	private String[][] userAnswers = new String[20][1];   
 
 	private JLabel jlQNo, jlQuestion;
 	private JRadioButton jrbOpt1, jrbOpt2, jrbOpt3, jrbOpt4;
 	private ButtonGroup bgOpts = new ButtonGroup();
 	private JButton jbNext, jbSubmit;
 
-	private static int timer = 15;
+	private static int timer = 30;
 	private static int ansGiven = 0;
 	private static int count = 0;
 	private static int score = 0;
 
-	public QuizApp() {
+	private String userName = null;
+
+	public QuizApp(String userName) {
+		this.userName = userName;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setLayout(null);
@@ -55,9 +58,9 @@ public class QuizApp extends JFrame implements ActionListener {
 		add(jlQuestion);
 
 		questions[0][0] = "Qual é o valor de 2⁵?";
-    questions[0][1] = "25";
-    questions[0][2] = "10";
-    questions[0][3] = "32";
+		questions[0][1] = "32";
+		questions[0][2] = "25";
+		questions[0][3] = "10";
     questions[0][4] = "20";
 
     questions[1][0] = "Dada a equação 3x + 5 = 11. Qual é a solução?";
@@ -67,14 +70,14 @@ public class QuizApp extends JFrame implements ActionListener {
     questions[1][4] = "5";
 
     questions[2][0] = "A área de um triângulo de base 10 cm e altura 5 cm é:";
-    questions[2][1] = "50cm²";
-    questions[2][2] = "25cm²";
+    questions[2][1] = "25cm²";
+    questions[2][2] = "50cm²";
     questions[2][3] = "15cm²";
     questions[2][4] = "20cm²";
 
     questions[3][0] = "Qual é o valor de √144?";
-    questions[3][1] = "8";
-    questions[3][2] = "12";
+    questions[3][1] = "12";
+    questions[3][2] = "8";
     questions[3][3] = "10";
     questions[3][4] = "Nenhuma das anteriores";
 
@@ -85,32 +88,32 @@ public class QuizApp extends JFrame implements ActionListener {
     questions[4][4] = "Um número maior que 100";
 
     questions[5][0] = "Qual é a soma dos ângulos internos de um triângulo?";
-    questions[5][1] = "90°";
-    questions[5][2] = "180°";
+    questions[5][1] = "180°";
+    questions[5][2] = "90°";
     questions[5][3] = "270°";
     questions[5][4] = "360°";
 
     questions[6][0] = "Quanto é 15% de R$200,00";
-    questions[6][1] = "R$20,00";
+    questions[6][1] = "R$30,00";
     questions[6][2] = "R$100,00";
-    questions[6][3] = "R$30,00";
+    questions[6][3] = "R$20,00";
     questions[6][4] = "R$180,00";
 
     questions[7][0] = "Se (a + 4 = 10) e (a - 4 = 2), quanto vale 'a'?";
-    questions[7][1] = "3";
+    questions[7][1] = "6";
     questions[7][2] = "4";
     questions[7][3] = "5";
-    questions[7][4] = "6";
+    questions[7][4] = "3";
 
     questions[8][0] = "O valor de (x) que satisfaz (x² = 49) é:";
-    questions[8][1] = "26";
+    questions[8][1] = "-7 e 7";
     questions[8][2] = "24,5";
     questions[8][3] = "7";
-    questions[8][4] = "-7 e 7";
+    questions[8][4] = "26";
 
     questions[9][0] = "Qual é o perímetro de um quadrado com lado 8 cm?";
-    questions[9][1] = "16cm";
-    questions[9][2] = "32cm";
+    questions[9][1] = "32cm";
+    questions[9][2] = "16cm";
     questions[9][3] = "64cm";
     questions[9][4] = "8cm";
 
@@ -123,8 +126,8 @@ public class QuizApp extends JFrame implements ActionListener {
     questions[10][4] = "Prova";
 
     questions[11][0] = "Qual das palavras abaixo é um substantivo abstrato?";
-    questions[11][1] = "Mesa";
-    questions[11][2] = "Coragem";
+    questions[11][1] = "Coragem";
+    questions[11][2] = "Mesa";
     questions[11][3] = "Casa";
     questions[11][4] = "Flor";
 
@@ -135,15 +138,15 @@ public class QuizApp extends JFrame implements ActionListener {
     questions[12][4] = "Inxeção";
 
     questions[13][0] = "A frase \"Ela trouxe o livro para ler\" contém:";
-    questions[13][1] = "Uma conjunção coordenativa";
-    questions[13][2] = "Uma preposição";
+    questions[13][1] = "Uma preposição";
+    questions[13][2] = "Uma conjunção coordenativa";
     questions[13][3] = "Um verbo no futuro";
     questions[13][4] = "Um pronome de tratamento";
 
     questions[14][0] = "Qual é o antônimo de \"feliz\"?";
-    questions[14][1] = "Alegre";
+    questions[14][1] = "Triste";
     questions[14][2] = "Contente";
-    questions[14][3] = "Triste";
+    questions[14][3] = "Alegre";
     questions[14][4] = "Amargo";
 
     questions[15][0] = "Identifique a função da palavra \"que\" na frase: \"O filme que assistimos foi emocionante\"";
@@ -153,58 +156,59 @@ public class QuizApp extends JFrame implements ActionListener {
     questions[15][4] = "Preposição";
 
     questions[16][0] = "A oração \"Embora esteja cansado, ele foi trabalhar\" é:";
-    questions[16][1] = "Coordenada";
-    questions[16][2] = "Subordinada adverbial concessiva";
+    questions[16][1] = "Subordinada adverbial concessiva";
+    questions[16][2] = "Coordenada";
     questions[16][3] = "Subordinada substantiva";
     questions[16][4] = "Principal";
 
     questions[17][0] = "Qual palavra da frase \"Os livros na estante são antigos\" é um adjetivo?";
-    questions[17][1] = "livros";
+    questions[17][1] = "antigos";
     questions[17][2] = "estante";
-    questions[17][3] = "antigos";
+    questions[17][3] = "livros";
     questions[17][4] = "são";
 
     questions[18][0] = "Na palavra \"coração\", qual é o tipo de acento utilizado?";
-    questions[18][1] = "Grave";
+    questions[18][1] = "Nenhum";
     questions[18][2] = "Agudo";
     questions[18][3] = "Circunflexo";
-    questions[18][4] = "Nenhum";
+    questions[18][4] = "Grave";
 
     questions[19][0] = "Qual alternativa possui uma oração subordinada adjetiva?";
-    questions[19][1] = "Comprei um carro novo";
-    questions[19][2] = "O carro que comprei é novo";
+    questions[19][1] = "O carro que comprei é novo";
+    questions[19][2] = "Comprei um carro novo";
     questions[19][3] = "Eles saíram cedo para trabalhar";
     questions[19][4] = "A decisão foi rápida";
     
     // ---------------------Answers------------------------
 
-    answers[0][3]  = "32";
+    answers[0][1]  = "32";
     answers[1][1]  = "2";
-    answers[2][2]  = "25cm²";
-    answers[3][2]  = "12";
+    answers[2][1]  = "25cm²";
+    answers[3][1]  = "12";
     answers[4][1]  = "Um número que só é divisível por 1 e ele mesmo";
-    answers[5][2]  = "180°";
-    answers[6][3]  = "R$30,00";
-    answers[7][4]  = "6";
-    answers[8][4]  = "-7 e 7";
-    answers[9][2]  = "32cm";
+    answers[5][1]  = "180°";
+    answers[6][1]  = "R$30,00";
+    answers[7][1]  = "6";
+    answers[8][1]  = "-7 e 7";
+    answers[9][1]  = "32cm";
     // -------------português
     answers[10][1] = "Os alunos";
-    answers[11][2] = "Coragem";
+    answers[11][1] = "Coragem";
     answers[12][1] = "Conserto";
-    answers[13][2] = "Uma preposição";
-    answers[14][3] = "Triste";
+    answers[13][1] = "Uma preposição";
+    answers[14][1] = "Triste";
     answers[15][1] = "Pronome relativo";
-    answers[16][2] = "Subordinada adverbial concessiva";
-    answers[17][3] = "antigos";
-    answers[18][4] = "Nenhum";
-    answers[19][2] = "O carro que comprei é novo";
+    answers[16][1] = "Subordinada adverbial concessiva";
+    answers[17][1] = "antigos";
+    answers[18][1] = "Nenhum";
+    answers[19][1] = "O carro que comprei é novo";
 
     jrbOpt1 = new JRadioButton("Opção 1");
     jrbOpt1.setBounds(130, 450, 700, 30);
     jrbOpt1.setFont(new Font("Dialog", Font.PLAIN, 16));
     jrbOpt1.setBackground(Color.BLACK);
     jrbOpt1.setForeground(Color.WHITE);
+    jrbOpt1.setBorder(null);
     add(jrbOpt1);
 
     jrbOpt2 = new JRadioButton("Opção 1");
@@ -212,6 +216,7 @@ public class QuizApp extends JFrame implements ActionListener {
     jrbOpt2.setFont(new Font("Dialog", Font.PLAIN, 16));
     jrbOpt2.setBackground(Color.BLACK);
     jrbOpt2.setForeground(Color.WHITE);
+    jrbOpt2.setBorder(null);
     add(jrbOpt2);
 
     jrbOpt3 = new JRadioButton("Opção 1");
@@ -219,6 +224,7 @@ public class QuizApp extends JFrame implements ActionListener {
     jrbOpt3.setFont(new Font("Dialog", Font.PLAIN, 16));
     jrbOpt3.setBackground(Color.BLACK);
     jrbOpt3.setForeground(Color.WHITE);
+    jrbOpt3.setBorder(null);
     add(jrbOpt3);
 
     jrbOpt4 = new JRadioButton("Opção 1");
@@ -226,6 +232,7 @@ public class QuizApp extends JFrame implements ActionListener {
     jrbOpt4.setFont(new Font("Dialog", Font.PLAIN, 16));
     jrbOpt4.setBackground(Color.BLACK);
     jrbOpt4.setForeground(Color.WHITE);
+    jrbOpt4.setBorder(null);
     add(jrbOpt4);
 
     bgOpts = new ButtonGroup();
@@ -297,7 +304,7 @@ public class QuizApp extends JFrame implements ActionListener {
 					score += 0;
 			}
 			setVisible(false);
-			// open score screen
+			new Score(userName, score);
 		}
 	}
 
@@ -331,10 +338,10 @@ public class QuizApp extends JFrame implements ActionListener {
 
 		if (ansGiven == 1) {
 			ansGiven = 0;
-			timer = 15;
+			timer = 30;
 
 		} else if (timer < 0) {
-			timer = 15;
+			timer = 30;
 
 			if (count == 18) {
 				jbNext.setEnabled(false);
@@ -356,7 +363,7 @@ public class QuizApp extends JFrame implements ActionListener {
 						score += 0;
 				}
 				setVisible(false);
-				// open score screen
+				new Score(time, score);
 
 			} else { // next button
 
@@ -389,12 +396,11 @@ public class QuizApp extends JFrame implements ActionListener {
 		bgOpts.clearSelection();
 	}
 
-
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new QuizApp();
+				new QuizApp("");
 			}
 		});
 	}

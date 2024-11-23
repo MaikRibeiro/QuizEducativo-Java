@@ -62,13 +62,13 @@ public class Login extends JFrame implements ActionListener {
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		
 		addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                System.out.println("Free resources...");
-                jlImage.setIcon(null);
-                dispose();
-            }
-        });
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent e) {
+            System.out.println("Free resources...");
+            jlImage.setIcon(null);
+            dispose();
+        }
+    });
 		
 		setVisible(true);
 	}
@@ -77,9 +77,11 @@ public class Login extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == jbRules) {
 			setVisible(false);
+			dispose();
 			new Rules(jtfNameInput.getText());
 		} else if (e.getSource() == jbClose) {
 			setVisible(false);
+			dispose();
 		}
 	}
 
