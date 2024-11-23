@@ -3,6 +3,8 @@ package quiz.application;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -11,20 +13,23 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 
-public class QuizApp extends JFrame {
+public class QuizApp extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 6574515577473204562L;
 
 	private String[][] questions = new String[20][5];
 	private String[][] answers = new String[20][5];
 	private String[][] userAnswers = new String[19][1];   
+
 	private JLabel jlQNo, jlQuestion;
 	private JRadioButton jrbOpt1, jrbOpt2, jrbOpt3, jrbOpt4;
 	private ButtonGroup bgOpts = new ButtonGroup();
+	private JButton jbNext, jbSubmit;
 
 	private static int timer = 15;
 	private static int ansGiven = 0;
 	private static int count = 0;
+	private static int score = 0;
 
 	public QuizApp() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -229,38 +234,77 @@ public class QuizApp extends JFrame {
     bgOpts.add(jrbOpt3);
     bgOpts.add(jrbOpt4);
 
-    JButton jbNext = new JButton("Next");
+    jbNext = new JButton("Next");
     jbNext.setBounds(1050, 500, 180, 30);
     jbNext.setFont(new Font("Arial", Font.PLAIN, 22));
     jbNext.setBackground(new Color(50, 150, 118));
     jbNext.setForeground(Color.WHITE);
+    jbNext.addActionListener(this);
     add(jbNext);
 
-    JButton jbSubmit = new JButton("Finalizar");
+    jbSubmit = new JButton("Finalizar");
     jbSubmit.setBounds(1050, 540, 180, 30);
     jbSubmit.setFont(new Font("Arial", Font.PLAIN, 22));
     jbSubmit.setBackground(new Color(50, 150, 118));
     jbSubmit.setForeground(Color.WHITE);
     jbSubmit.setEnabled(false);
+    jbSubmit.addActionListener(this);
     add(jbSubmit);
 
     start(count);
     setVisible(true);
 
     addWindowListener(new java.awt.event.WindowAdapter() {
-          @Override
-          public void windowClosing(java.awt.event.WindowEvent e) {
-              System.out.println("Free resources...");
-              jlImage.setIcon(null);
-              dispose();
-          }
-      });
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent e) {
+            jlImage.setIcon(null);
+            dispose();
+        }
+    });
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == jbNext) {
+			repaint();
+
+			ansGiven = 1;
+			if (bgOpts.getSelection() == null)
+				userAnswers[count][0] = "";
+			else
+				userAnswers[count][0] = bgOpts.getSelection().getActionCommand();
+
+			if (count == 18) {
+				jbNext.setEnabled(false);
+				jbSubmit.setEnabled(true);
+			}
+
+			count++;
+			start(count);
+
+		} else {
+			ansGiven = 1;
+			if (bgOpts.getSelection() == null)
+				userAnswers[count][0] = "";
+			else
+				userAnswers[count][0] = bgOpts.getSelection().getActionCommand();
+
+			for (int i = 0; i < userAnswers.length; i++) {
+
+				if (userAnswers[i][0].equals(answers[i][1]))
+					score += 10;
+				else
+					score += 0;
+			}
+			setVisible(false);
+			// open score screen
+		}
 	}
 
 	public void paint(Graphics g) {
 		super.paint(g);
 
-		String time = "Tempo restante - " + timer + "s";
+		String time = "Tempo restante: " + timer + "s";
 
 		if (timer >= 6)
 			g.setColor(Color.WHITE);
@@ -288,15 +332,42 @@ public class QuizApp extends JFrame {
 		if (ansGiven == 1) {
 			ansGiven = 0;
 			timer = 15;
+
 		} else if (timer < 0) {
 			timer = 15;
 
-			if (bgOpts.getSelection() == null)
-				userAnswers[count][0] = "";
-			else
-				userAnswers[count][0] = bgOpts.getSelection().getActionCommand();
+			if (count == 18) {
+				jbNext.setEnabled(false);
+				jbSubmit.setEnabled(true);
+			}
+
+			if (count == 19) { // submit button
+
+				if (bgOpts.getSelection() == null)
+					userAnswers[count][0] = "";
+				else
+					userAnswers[count][0] = bgOpts.getSelection().getActionCommand();
+
+				for (int i = 0; i < userAnswers.length; i++) {
+
+					if (userAnswers[i][0].equals(answers[i][1]))
+						score += 10;
+					else
+						score += 0;
+				}
+				setVisible(false);
+				// open score screen
+
+			} else { // next button
+
+				if (bgOpts.getSelection() == null)
+					userAnswers[count][0] = "";
+				else
+					userAnswers[count][0] = bgOpts.getSelection().getActionCommand();
+			}
 
 			count++;
+			start(count);
 		}
 	}
 
@@ -304,10 +375,20 @@ public class QuizApp extends JFrame {
 		jlQNo.setText((count + 1) + ".");
 		jlQuestion.setText(questions[count][0]);
 		jrbOpt1.setText(questions[count][1]);
+		jrbOpt1.setActionCommand(questions[count][1]);
+
 		jrbOpt2.setText(questions[count][2]);
+		jrbOpt2.setActionCommand(questions[count][2]);
+
 		jrbOpt3.setText(questions[count][3]);
+		jrbOpt3.setActionCommand(questions[count][3]);
+		
 		jrbOpt4.setText(questions[count][4]);
+		jrbOpt4.setActionCommand(questions[count][4]);
+
+		bgOpts.clearSelection();
 	}
+
 
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
