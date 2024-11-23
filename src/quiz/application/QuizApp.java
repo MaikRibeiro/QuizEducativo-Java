@@ -1,17 +1,30 @@
 package quiz.application;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
 
 public class QuizApp extends JFrame {
 
 	private static final long serialVersionUID = 6574515577473204562L;
 
-	private String[][] questions = new String[9][5];
-	private String[][] answers = new String[9][5];
+	private String[][] questions = new String[20][5];
+	private String[][] answers = new String[20][5];
+	private String[][] userAnswers = new String[19][1];   
+	private JLabel jlQNo, jlQuestion;
+	private JRadioButton jrbOpt1, jrbOpt2, jrbOpt3, jrbOpt4;
+	private ButtonGroup bgOpts = new ButtonGroup();
+
+	private static int timer = 15;
+	private static int ansGiven = 0;
+	private static int count = 0;
 
 	public QuizApp() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -21,8 +34,20 @@ public class QuizApp extends JFrame {
 		getContentPane().setBackground(Color.BLACK);
 
 		JLabel jlImage = new JLabel(new ImageIcon(ClassLoader.getSystemResource("icons/quiz.jpg")));
-		jlImage.setBounds(0, 0, 1280, 392);
+		jlImage.setBounds(0, 0, 1280, 350);
 		add(jlImage);
+
+		jlQNo = new JLabel();
+		jlQNo.setBounds(100, 400, 50, 30);
+		jlQNo.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		jlQNo.setForeground(Color.WHITE);
+		add(jlQNo);
+
+		jlQuestion = new JLabel();
+		jlQuestion.setBounds(130, 400, 900, 30);
+		jlQuestion.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		jlQuestion.setForeground(Color.WHITE);
+		add(jlQuestion);
 
 		questions[0][0] = "Qual é o valor de 2⁵?";
     questions[0][1] = "25";
@@ -86,7 +111,7 @@ public class QuizApp extends JFrame {
 
     //---------------------Português-----------------------
     
-		questions[10][0] = "Qual é o sujeito na frase: 'Os alunos estudam para a prova'?";
+		questions[10][0] = "Qual é o sujeito na frase: \"Os alunos estudam para a prova\"?";
     questions[10][1] = "Os alunos";
     questions[10][2] = "Estudam";
     questions[10][3] = "Para a prova";
@@ -104,37 +129,37 @@ public class QuizApp extends JFrame {
     questions[12][3] = "Propiço";
     questions[12][4] = "Inxeção";
 
-    questions[13][0] = "A frase 'Ela trouxe o livro para ler' contém:";
+    questions[13][0] = "A frase \"Ela trouxe o livro para ler\" contém:";
     questions[13][1] = "Uma conjunção coordenativa";
     questions[13][2] = "Uma preposição";
     questions[13][3] = "Um verbo no futuro";
     questions[13][4] = "Um pronome de tratamento";
 
-    questions[14][0] = "Qual é o antônimo de 'feliz'?";
+    questions[14][0] = "Qual é o antônimo de \"feliz\"?";
     questions[14][1] = "Alegre";
     questions[14][2] = "Contente";
     questions[14][3] = "Triste";
     questions[14][4] = "Amargo";
 
-    questions[15][0] = "Identifique a função da palavra 'que' na frase: 'O filme que assistimos foi emocionante'";
+    questions[15][0] = "Identifique a função da palavra \"que\" na frase: \"O filme que assistimos foi emocionante\"";
     questions[15][1] = "Pronome relativo";
     questions[15][2] = "Conjunção";
     questions[15][3] = "Advérbio";
     questions[15][4] = "Preposição";
 
-    questions[16][0] = "A oração 'Embora esteja cansado, ele foi trabalhar' é:";
+    questions[16][0] = "A oração \"Embora esteja cansado, ele foi trabalhar\" é:";
     questions[16][1] = "Coordenada";
     questions[16][2] = "Subordinada adverbial concessiva";
     questions[16][3] = "Subordinada substantiva";
     questions[16][4] = "Principal";
 
-    questions[17][0] = "Qual palavra da frase 'Os livros na estante são antigos' é um adjetivo?";
+    questions[17][0] = "Qual palavra da frase \"Os livros na estante são antigos\" é um adjetivo?";
     questions[17][1] = "livros";
     questions[17][2] = "estante";
     questions[17][3] = "antigos";
     questions[17][4] = "são";
 
-    questions[18][0] = "Na palavra 'coração', qual é o tipo de acento utilizado?";
+    questions[18][0] = "Na palavra \"coração\", qual é o tipo de acento utilizado?";
     questions[18][1] = "Grave";
     questions[18][2] = "Agudo";
     questions[18][3] = "Circunflexo";
@@ -169,8 +194,60 @@ public class QuizApp extends JFrame {
     answers[17][3] = "antigos";
     answers[18][4] = "Nenhum";
     answers[19][2] = "O carro que comprei é novo";
-    
-		addWindowListener(new java.awt.event.WindowAdapter() {
+
+    jrbOpt1 = new JRadioButton("Opção 1");
+    jrbOpt1.setBounds(130, 450, 700, 30);
+    jrbOpt1.setFont(new Font("Dialog", Font.PLAIN, 16));
+    jrbOpt1.setBackground(Color.BLACK);
+    jrbOpt1.setForeground(Color.WHITE);
+    add(jrbOpt1);
+
+    jrbOpt2 = new JRadioButton("Opção 1");
+    jrbOpt2.setBounds(130, 490, 700, 30);
+    jrbOpt2.setFont(new Font("Dialog", Font.PLAIN, 16));
+    jrbOpt2.setBackground(Color.BLACK);
+    jrbOpt2.setForeground(Color.WHITE);
+    add(jrbOpt2);
+
+    jrbOpt3 = new JRadioButton("Opção 1");
+    jrbOpt3.setBounds(130, 530, 700, 30);
+    jrbOpt3.setFont(new Font("Dialog", Font.PLAIN, 16));
+    jrbOpt3.setBackground(Color.BLACK);
+    jrbOpt3.setForeground(Color.WHITE);
+    add(jrbOpt3);
+
+    jrbOpt4 = new JRadioButton("Opção 1");
+    jrbOpt4.setBounds(130, 570, 700, 30);
+    jrbOpt4.setFont(new Font("Dialog", Font.PLAIN, 16));
+    jrbOpt4.setBackground(Color.BLACK);
+    jrbOpt4.setForeground(Color.WHITE);
+    add(jrbOpt4);
+
+    bgOpts = new ButtonGroup();
+    bgOpts.add(jrbOpt1);
+    bgOpts.add(jrbOpt2);
+    bgOpts.add(jrbOpt3);
+    bgOpts.add(jrbOpt4);
+
+    JButton jbNext = new JButton("Next");
+    jbNext.setBounds(1050, 500, 180, 30);
+    jbNext.setFont(new Font("Arial", Font.PLAIN, 22));
+    jbNext.setBackground(new Color(50, 150, 118));
+    jbNext.setForeground(Color.WHITE);
+    add(jbNext);
+
+    JButton jbSubmit = new JButton("Finalizar");
+    jbSubmit.setBounds(1050, 540, 180, 30);
+    jbSubmit.setFont(new Font("Arial", Font.PLAIN, 22));
+    jbSubmit.setBackground(new Color(50, 150, 118));
+    jbSubmit.setForeground(Color.WHITE);
+    jbSubmit.setEnabled(false);
+    add(jbSubmit);
+
+    start(count);
+    setVisible(true);
+
+    addWindowListener(new java.awt.event.WindowAdapter() {
           @Override
           public void windowClosing(java.awt.event.WindowEvent e) {
               System.out.println("Free resources...");
@@ -178,11 +255,66 @@ public class QuizApp extends JFrame {
               dispose();
           }
       });
+	}
+
+	public void paint(Graphics g) {
+		super.paint(g);
+
+		String time = "Tempo restante - " + timer + "s";
+
+		if (timer >= 6)
+			g.setColor(Color.WHITE);
+		else
+			g.setColor(Color.RED);
+
+		g.setFont(new Font("Arial", Font.BOLD, 18));
+
+		if (timer > 0)
+			g.drawString(time, 550, 410);
+		else
+			g.drawString("Tempo esgotado", 550, 410);
+			
+
+		timer--;
 		
-		setVisible(true);
+		try {
+			Thread.sleep(1000);
+			repaint();
+
+		} catch (Exception e) {
+			e.printStackTrace(); 
+		}
+
+		if (ansGiven == 1) {
+			ansGiven = 0;
+			timer = 15;
+		} else if (timer < 0) {
+			timer = 15;
+
+			if (bgOpts.getSelection() == null)
+				userAnswers[count][0] = "";
+			else
+				userAnswers[count][0] = bgOpts.getSelection().getActionCommand();
+
+			count++;
+		}
+	}
+
+	private void start(int count) {
+		jlQNo.setText((count + 1) + ".");
+		jlQuestion.setText(questions[count][0]);
+		jrbOpt1.setText(questions[count][1]);
+		jrbOpt2.setText(questions[count][2]);
+		jrbOpt3.setText(questions[count][3]);
+		jrbOpt4.setText(questions[count][4]);
 	}
 
 	public static void main(String[] args) {
-		new QuizApp();
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				new QuizApp();
+			}
+		});
 	}
 }
